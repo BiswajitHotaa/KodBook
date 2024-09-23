@@ -1,23 +1,77 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Create Post</title>
+    <meta charset="UTF-8">
+    <title>Create Post</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa; /* Very light gray */
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            background: #ffffff; /* White background */
+            padding: 40px;
+            border-radius: 12px; /* Rounded corners */
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1); /* Shadow effect */
+            width: 90%; /* Responsive width */
+            max-width: 400px; /* Maximum width */
+            text-align: center;
+        }
+        h1 {
+            color: #4a4a4a; /* Dark gray */
+            margin-bottom: 20px;
+        }
+        textarea {
+            width: calc(100% - 20px);
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 2px solid #ced4da; /* Light gray */
+            border-radius: 6px;
+            box-sizing: border-box;
+            resize: none; /* Prevent resizing */
+            transition: border-color 0.3s;
+            height: 100px; /* Fixed height for the textarea */
+        }
+        textarea:focus {
+            border-color: #007bff; /* Bright blue */
+            outline: none;
+        }
+        input[type="file"] {
+            margin-bottom: 15px;
+        }
+        button {
+            background-color: #007bff; /* Bright blue */
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3; /* Darker blue */
+        }
+    </style>
 </head>
 <body>
-	<div class="container">
-		<h1>New Post</h1>
+    <div class="container">
+        <h1>New Post</h1>
 
-		<form action="/createPost" method="post" enctype="multipart/form-data">
+        <form action="/createPost" method="post" enctype="multipart/form-data">
+            <textarea name="caption" placeholder="Caption" required></textarea>
+            
+            <input type="file" id="photo" name="photo" accept="image/*"> 
 
-			<textarea name="caption" placeholder="caption" required>
-		</textarea>
-			<br> <br> <input type="file" id="photo" name="photo"
-				accept="image/*"> <br> <br>
-
-			<button type="submit">POST</button>
-		</form>
-	</div>
-
+            <button type="submit">POST</button>
+        </form>
+    </div>
 </body>
 </html>

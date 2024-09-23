@@ -1,14 +1,165 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>HomePage</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomePage</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #eef2f3; /* Light gray background */
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background: linear-gradient(90deg, #007bff, #0056b3);
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        nav a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #ffcc00;
+        }
+        h1 {
+            text-align: center;
+            color: #343a40;
+            margin: 20px 0;
+            font-size: 2.5em;
+        }
+        .profile-details {
+            margin-top: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px; /* Space between posts */
+        }
+        .post {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        .post:hover {
+            transform: scale(1.05);
+        }
+        .post img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 10px; /* Space below the image */
+        }
+        .caption {
+            margin-top: 10px;
+            color: #495057;
+            font-style: italic;
+            font-size: 1.1em;
+        }
+        .likes-comment {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .likes-comment form {
+            margin: 5px 0; /* Space between forms */
+        }
+        textarea {
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 8px;
+            margin-top: 5px;
+            resize: none; /* Prevent resizing */
+        }
+        input[type="submit"] {
+            background-color: #007bff; /* Button color */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3; /* Darker button on hover */
+        }
+        .comments-section {
+            margin-top: 15px;
+            text-align: left; /* Align comments to the left */
+        }
+        .comments-section ul {
+            list-style-type: none;
+            padding: 0; /* Remove default padding */
+        }
+        .comments-section li {
+            padding: 5px 0; /* Space between comments */
+            border-bottom: 1px solid #eaeaea; /* Light bottom border */
+            color: #495057; /* Darker color for comments */
+        }
+    </style>
 </head>
 <body>
-	<h1>Home!!!!!</h1>
+    <nav>
+        <span th:text="${session.username}"></span>
+        <a href="/goHome"><i class="fas fa-home"></i> News feed</a>
+        <a href="/openCreatePost"><i class="fas fa-plus-circle"></i> Create post</a>
+        <a href="/"><i class="fas fa-user-circle"></i> My profile</a>
+        <a href="/"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+    </nav>
 
-	<a href="/openCreatePost">Create Post</a>
-	
-	<a href="/showPosts">show all Posts </a>
+    <h1>Post Details</h1>
+
+    <div class="profile-details">
+        <span th:each="post:${allPosts}" class="post">
+            <p><strong>Photo:</strong></p>
+            <img th:if="${post.photoBase64}"
+                 th:src="'data:image/jpeg;base64,' + ${post.photoBase64}"
+                 alt="Post photo">
+            <p><strong>Caption:</strong>
+                <span th:text="${post.caption}" class="caption"></span>
+            </p>
+            <div class="likes-comment">
+                <p><strong>Likes:</strong> 
+                    <span th:text="${post.likes}"></span>
+                </p>
+                <form action="/likePost" method="post">
+                    <input name="id" th:value="${post.id}" type="hidden">
+                    <input type="submit" value="LIKE POST">
+                </form>
+                <!-- Comment form -->
+                <form action="/addComment" method="post" class="comment-form">
+                    <input type="hidden" name="id" th:value="${post.id}">
+                    <textarea name="comment" placeholder="Add a comment..." required></textarea>
+                    <input type="submit" value="Comment">
+                </form>
+            </div>
+            <!-- Displaying Comments -->
+            <div class="comments-section">
+                <h4>Comments:</h4>
+                <ul>
+                    <li th:each="comment : ${post.comments}">
+                        <span th:text="${comment}"></span>
+                    </li>
+                </ul>
+            </div>
+        </span>
+    </div>
 </body>
 </html>
